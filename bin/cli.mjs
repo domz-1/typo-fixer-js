@@ -32,7 +32,10 @@ if (args.includes("-v") || args.includes("--version")) {
 }
 
 const isJson = args.includes("--json");
-const textArgs = args.filter((a) => a !== "--json");
+const isRaw = args.includes("-r") || args.includes("--raw");
+const textArgs = args.filter(
+  (a) => a !== "--json" && a !== "--raw" && a !== "-r",
+);
 
 function processText(input) {
   if (!input || !input.trim()) {
@@ -41,8 +44,16 @@ function processText(input) {
   if (isJson) {
     const res = fixDetailed(input);
     console.log(JSON.stringify(res, null, 2));
-  } else {
+  } else if (isRaw || !process.stdout.isTTY) {
     console.log(fix(input));
+  } else {
+    const res = fixDetailed(input);
+    let tag = "✨ Fixed:";
+    if (res.layoutSwapped) {
+      tag =
+        res.layoutDirection === "en-to-ar" ? "🔀 [EN ➔ AR]:" : "🔀 [AR ➔ EN]:";
+    }
+    console.log(`${tag} ${res.fixed}`);
   }
 }
 
