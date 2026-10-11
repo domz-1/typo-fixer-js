@@ -29,6 +29,9 @@ describe("typo-fixer npm package tests", () => {
     expect(fix("غخعفعلاث")).toBe("Youtube");
     expect(fix("لخخلمث")).toBe("Google");
     expect(fix("فثسف")).toBe("Test");
+    expect(fix("ِةثثى 'خاشةثي ÷س فاث لاثسف غخعفعلاثق")).toBe(
+      "Ameen Mohamed Is the best youtuber",
+    );
   });
 
   test("fixDetailed(): returns comprehensive change metadata", () => {
