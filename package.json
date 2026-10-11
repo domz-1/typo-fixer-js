@@ -1,5 +1,5 @@
 {
-  "name": "@domz-1/typo-fixer",
+  "name": "typo-fixer",
   "version": "1.0.0",
   "description": "Ultra-fast, zero-dependency bilingual typo fixer & accidental keyboard layout converter (Arabic ⇄ English)",
   "main": "./dist/index.cjs",
@@ -13,7 +13,7 @@
     }
   },
   "bin": {
-    "typo-fixer": "./bin/cli.mjs"
+    "typo-fixer": "bin/cli.mjs"
   },
   "files": [
     "dist",
@@ -45,7 +45,7 @@
   "homepage": "https://github.com/domz-1/typo-fixer-js#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/domz-1/typo-fixer-js.git"
+    "url": "git+https://github.com/domz-1/typo-fixer-js.git"
   },
   "bugs": {
     "url": "https://github.com/domz-1/typo-fixer-js/issues"

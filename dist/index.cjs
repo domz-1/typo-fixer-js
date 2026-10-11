@@ -2,21 +2,17 @@ var __defProp = Object.defineProperty;
 var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
-var __moduleCache = /* @__PURE__ */ new WeakMap();
+var __moduleCache = /* @__PURE__ */ new WeakMap;
 var __toCommonJS = (from) => {
-  var entry = __moduleCache.get(from),
-    desc;
-  if (entry) return entry;
+  var entry = __moduleCache.get(from), desc;
+  if (entry)
+    return entry;
   entry = __defProp({}, "__esModule", { value: true });
-  if ((from && typeof from === "object") || typeof from === "function")
-    __getOwnPropNames(from).map(
-      (key) =>
-        !__hasOwnProp.call(entry, key) &&
-        __defProp(entry, key, {
-          get: () => from[key],
-          enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable,
-        }),
-    );
+  if (from && typeof from === "object" || typeof from === "function")
+    __getOwnPropNames(from).map((key) => !__hasOwnProp.call(entry, key) && __defProp(entry, key, {
+      get: () => from[key],
+      enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable
+    }));
   __moduleCache.set(from, entry);
   return entry;
 };
@@ -26,7 +22,7 @@ var __export = (target, all) => {
       get: all[name],
       enumerable: true,
       configurable: true,
-      set: (newValue) => (all[name] = () => newValue),
+      set: (newValue) => all[name] = () => newValue
     });
 };
 
@@ -48,7 +44,7 @@ __export(exports_src, {
   DEFAULT_ENGLISH_WORDS: () => DEFAULT_ENGLISH_WORDS,
   DEFAULT_COMMON_TYPOS: () => DEFAULT_COMMON_TYPOS,
   DEFAULT_ARABIC_WORDS: () => DEFAULT_ARABIC_WORDS,
-  AR_TO_EN: () => AR_TO_EN,
+  AR_TO_EN: () => AR_TO_EN
 });
 module.exports = __toCommonJS(exports_src);
 
@@ -121,7 +117,7 @@ var EN_TO_AR = {
   M: "'",
   "<": ",",
   ">": ".",
-  "?": "؟",
+  "?": "؟"
 };
 var AR_TO_EN = {};
 for (const [k, v] of Object.entries(EN_TO_AR)) {
@@ -237,7 +233,7 @@ var DEFAULT_COMMON_TYPOS = {
   جدا: "جداً",
   ايضا: "أيضاً",
   دائما: "دائماً",
-  مبروك: "مبارك",
+  مبروك: "مبارك"
 };
 var DEFAULT_ARABIC_WORDS = new Set([
   "سلام",
@@ -329,7 +325,7 @@ var DEFAULT_ARABIC_WORDS = new Set([
   "مشروع",
   "تطوير",
   "بيانات",
-  "تصميم",
+  "تصميم"
 ]);
 var DEFAULT_ENGLISH_WORDS = new Set([
   "the",
@@ -496,26 +492,22 @@ var DEFAULT_ENGLISH_WORDS = new Set([
   "number",
   "string",
   "function",
-  "class",
+  "class"
 ]);
 
 // src/index.ts
 function enToAr(text) {
   let result = "";
-  for (let i = 0; i < text.length; i++) {
+  for (let i = 0;i < text.length; i++) {
     const c = text[i];
     result += EN_TO_AR[c] || c;
   }
   return result;
 }
 function arToEn(text) {
-  const t = text
-    .replace(/لإ/g, "T")
-    .replace(/لأ/g, "G")
-    .replace(/لآ/g, "B")
-    .replace(/لا/g, "b");
+  const t = text.replace(/لإ/g, "T").replace(/لأ/g, "G").replace(/لآ/g, "B").replace(/لا/g, "b");
   let result = "";
-  for (let i = 0; i < t.length; i++) {
+  for (let i = 0;i < t.length; i++) {
     const c = t[i];
     result += AR_TO_EN[c] || c;
   }
@@ -527,58 +519,29 @@ function isArabic(text) {
 function isEnglish(text) {
   return /[a-zA-Z]/.test(text);
 }
-function detectAccidentalLayout(
-  text,
-  arabicWords = DEFAULT_ARABIC_WORDS,
-  englishWords = DEFAULT_ENGLISH_WORDS,
-  typoMap = DEFAULT_COMMON_TYPOS,
-) {
+function detectAccidentalLayout(text, arabicWords = DEFAULT_ARABIC_WORDS, englishWords = DEFAULT_ENGLISH_WORDS, typoMap = DEFAULT_COMMON_TYPOS) {
   if (!text || !text.trim())
     return { text: "", swapped: false, direction: "none" };
   const hasAr = isArabic(text);
   const hasEn = isEnglish(text);
   if (hasAr && !hasEn) {
-    const arWords = text
-      .split(/\s+/)
-      .map((w) => w.replace(/[^\u0600-\u06FF]/g, ""))
-      .filter(Boolean);
+    const arWords = text.split(/\s+/).map((w) => w.replace(/[^\u0600-\u06FF]/g, "")).filter(Boolean);
     const validArCount = arWords.filter((w) => arabicWords.has(w)).length;
     const converted = arToEn(text);
-    const enWords = converted
-      .toLowerCase()
-      .split(/\s+/)
-      .map((w) => w.replace(/[^a-z]/g, ""))
-      .filter(Boolean);
-    const validEnCount = enWords.filter(
-      (w) => englishWords.has(w) || typoMap[w],
-    ).length;
-    if (
-      validEnCount > 0 &&
-      (validEnCount >= enWords.length * 0.4 || validEnCount > validArCount)
-    ) {
+    const enWords = converted.toLowerCase().split(/\s+/).map((w) => w.replace(/[^a-z]/g, "")).filter(Boolean);
+    const validEnCount = enWords.filter((w) => englishWords.has(w) || typoMap[w]).length;
+    if (validEnCount > 0 && (validEnCount >= enWords.length * 0.4 || validEnCount > validArCount)) {
       return { text: converted, swapped: true, direction: "ar-to-en" };
     }
     return { text, swapped: false, direction: "ar" };
   }
   if (!hasAr) {
     const converted = enToAr(text);
-    const arWords = converted
-      .split(/\s+/)
-      .map((w) => w.replace(/[^\u0600-\u06FF]/g, ""))
-      .filter(Boolean);
+    const arWords = converted.split(/\s+/).map((w) => w.replace(/[^\u0600-\u06FF]/g, "")).filter(Boolean);
     const validArCount = arWords.filter((w) => arabicWords.has(w)).length;
-    const enWords = text
-      .toLowerCase()
-      .split(/\s+/)
-      .map((w) => w.replace(/[^a-z]/g, ""))
-      .filter(Boolean);
-    const validEnCount = enWords.filter(
-      (w) => englishWords.has(w) || typoMap[w] || w.length <= 2,
-    ).length;
-    if (
-      validArCount > 0 &&
-      (validArCount >= arWords.length * 0.35 || validArCount > validEnCount)
-    ) {
+    const enWords = text.toLowerCase().split(/\s+/).map((w) => w.replace(/[^a-z]/g, "")).filter(Boolean);
+    const validEnCount = enWords.filter((w) => englishWords.has(w) || typoMap[w] || w.length <= 2).length;
+    if (validArCount > 0 && (validArCount >= arWords.length * 0.35 || validArCount > validEnCount)) {
       return { text: converted, swapped: true, direction: "en-to-ar" };
     }
     if (validEnCount >= enWords.length * 0.4) {
@@ -588,20 +551,15 @@ function detectAccidentalLayout(
   }
   return { text, swapped: false, direction: "mixed" };
 }
-function correctWord(
-  word,
-  customMap = {},
-  typoMap = DEFAULT_COMMON_TYPOS,
-  ignoreList = new Set(),
-) {
-  const matchPunct = word.match(
-    /^([^a-zA-Z0-9\u0600-\u06FF]*)(.*?)([^a-zA-Z0-9\u0600-\u06FF]*)$/,
-  );
-  if (!matchPunct) return { word, changed: false };
+function correctWord(word, customMap = {}, typoMap = DEFAULT_COMMON_TYPOS, ignoreList = new Set) {
+  const matchPunct = word.match(/^([^a-zA-Z0-9\u0600-\u06FF]*)(.*?)([^a-zA-Z0-9\u0600-\u06FF]*)$/);
+  if (!matchPunct)
+    return { word, changed: false };
   const prefix = matchPunct[1];
   const core = matchPunct[2];
   const suffix = matchPunct[3];
-  if (!core) return { word, changed: false };
+  if (!core)
+    return { word, changed: false };
   const lowerCore = core.toLowerCase();
   if (ignoreList.has(lowerCore)) {
     return { word, changed: false };
@@ -621,7 +579,8 @@ function correctWord(
   return { word, changed: false };
 }
 function formatPunctuationAndCaps(text) {
-  if (!text) return "";
+  if (!text)
+    return "";
   let t = text.trim();
   if (/^[a-z]/.test(t)) {
     t = t.charAt(0).toUpperCase() + t.slice(1);
@@ -642,12 +601,9 @@ function formatPunctuationAndCaps(text) {
     "does",
     "did",
     "should",
-    "will",
+    "will"
   ];
-  const firstWord = t
-    .split(/\s+/)[0]
-    .toLowerCase()
-    .replace(/[^a-z]/g, "");
+  const firstWord = t.split(/\s+/)[0].toLowerCase().replace(/[^a-z]/g, "");
   if (questionWords.includes(firstWord) && !/[?.!]$/.test(t)) {
     t += "?";
   }
@@ -661,7 +617,7 @@ function fixDetailed(text, options = {}) {
       isChanged: false,
       layoutSwapped: false,
       layoutDirection: "none",
-      changes: [],
+      changes: []
     };
   }
   let current = text;
@@ -674,7 +630,7 @@ function fixDetailed(text, options = {}) {
       changes.push({
         from: current,
         to: layoutRes.text,
-        type: "layout",
+        type: "layout"
       });
       current = layoutRes.text;
       layoutSwapped = true;
@@ -682,36 +638,28 @@ function fixDetailed(text, options = {}) {
     }
   }
   const customMap = options.customSnippets || {};
-  const ignoreSet = new Set(
-    (options.ignoreWords || []).map((w) => w.toLowerCase()),
-  );
+  const ignoreSet = new Set((options.ignoreWords || []).map((w) => w.toLowerCase()));
   const chunks = current.split(/(\s+)/);
-  current = chunks
-    .map((chunk) => {
-      if (/\s+/.test(chunk)) return chunk;
-      const res = correctWord(
-        chunk,
-        customMap,
-        DEFAULT_COMMON_TYPOS,
-        ignoreSet,
-      );
-      if (res.changed) {
-        changes.push({
-          from: chunk,
-          to: res.word,
-          type: customMap[chunk.toLowerCase()] ? "snippet" : "typo",
-        });
-      }
-      return res.word;
-    })
-    .join("");
+  current = chunks.map((chunk) => {
+    if (/\s+/.test(chunk))
+      return chunk;
+    const res = correctWord(chunk, customMap, DEFAULT_COMMON_TYPOS, ignoreSet);
+    if (res.changed) {
+      changes.push({
+        from: chunk,
+        to: res.word,
+        type: customMap[chunk.toLowerCase()] ? "snippet" : "typo"
+      });
+    }
+    return res.word;
+  }).join("");
   if (options.autoFormat !== false) {
     const formatted = formatPunctuationAndCaps(current);
     if (formatted !== current) {
       changes.push({
         from: current,
         to: formatted,
-        type: "format",
+        type: "format"
       });
       current = formatted;
     }
@@ -722,7 +670,7 @@ function fixDetailed(text, options = {}) {
     isChanged: current !== text,
     layoutSwapped,
     layoutDirection,
-    changes,
+    changes
   };
 }
 function fix(text, options = {}) {
@@ -737,7 +685,7 @@ class TypoFixer {
       autoFormat: true,
       customSnippets: {},
       ignoreWords: [],
-      ...options,
+      ...options
     };
   }
   fix(text, overrideOptions) {
@@ -747,12 +695,14 @@ class TypoFixer {
     return fixDetailed(text, { ...this.options, ...overrideOptions });
   }
   addSnippet(shortcut, expansion) {
-    if (!this.options.customSnippets) this.options.customSnippets = {};
+    if (!this.options.customSnippets)
+      this.options.customSnippets = {};
     this.options.customSnippets[shortcut.toLowerCase()] = expansion;
     return this;
   }
   addIgnoreWord(...words) {
-    if (!this.options.ignoreWords) this.options.ignoreWords = [];
+    if (!this.options.ignoreWords)
+      this.options.ignoreWords = [];
     this.options.ignoreWords.push(...words);
     return this;
   }
@@ -767,5 +717,5 @@ var src_default = {
   detectAccidentalLayout,
   correctWord,
   formatPunctuationAndCaps,
-  TypoFixer,
+  TypoFixer
 };
