@@ -67,11 +67,12 @@ describe("typo-fixer npm package tests", () => {
         gm: "Good morning",
         brb: "be right back",
       },
-      ignoreWords: ["teh"], // ignore 'teh'
+      ignoreWords: ["mybrand"],
     });
 
     expect(fixer.fix("gm and brb")).toBe("Good morning and be right back");
-    expect(fixer.fix("teh wnat")).toBe("Teh want");
+    expect(fixer.fix("teh wnat")).toBe("The want");
+    expect(fixer.fix("mybrand wnat")).toBe("Mybrand want");
 
     // Fluent API
     fixer.addSnippet("np", "No problem");
