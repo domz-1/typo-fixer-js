@@ -1,6 +1,6 @@
 {
   "name": "typo-fixer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Ultra-fast, zero-dependency bilingual typo fixer & accidental keyboard layout converter (Arabic ⇄ English)",
   "main": "./dist/index.cjs",
   "module": "./dist/index.mjs",
