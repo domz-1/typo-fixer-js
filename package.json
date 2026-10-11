@@ -1,0 +1,57 @@
+{
+  "name": "@domz-1/typo-fixer",
+  "version": "1.0.0",
+  "description": "Ultra-fast, zero-dependency bilingual typo fixer & accidental keyboard layout converter (Arabic ⇄ English)",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "bin": {
+    "typo-fixer": "./bin/cli.mjs"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --entry-naming \"[name].mjs\" --format esm && bun build src/index.ts --outdir dist --entry-naming \"[name].cjs\" --format cjs && tsc --emitDeclarationOnly",
+    "test": "bun test",
+    "format": "bun x prettier --write .",
+    "lint": "bun x prettier --check .",
+    "prepublishOnly": "bun run build && bun run test"
+  },
+  "keywords": [
+    "typo-fixer",
+    "autocorrect",
+    "spellcheck",
+    "arabic",
+    "english",
+    "keyboard-layout",
+    "arabic-english",
+    "bilingual",
+    "zero-dependencies",
+    "cli"
+  ],
+  "author": "Adham <adhamelemrator3@gmail.com> (https://github.com/domz-1)",
+  "license": "MIT",
+  "homepage": "https://github.com/domz-1/typo-fixer-js#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/domz-1/typo-fixer-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/domz-1/typo-fixer-js/issues"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.0",
+    "typescript": "^5.7.0"
+  }
+}
